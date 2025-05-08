@@ -1,0 +1,146 @@
+public class PracticeStrings
+{
+    public static void One()
+    {
+        Console.WriteLine("Enter a string(method1:char array): ");
+        string input = Console.ReadLine()!;
+        char[] chars = input.ToCharArray();
+        Array.Reverse(chars);
+        string reversed = new string(chars);
+        Console.WriteLine("Reversed (using char array): " + reversed);
+
+        Console.WriteLine("Enter a string(method2:for-loop): ");
+        string input2 = Console.ReadLine()!;
+        Console.WriteLine("Reversed (using for-loop): ");
+        for (int i = input2.Length - 1; i >= 0; i--)
+            Console.WriteLine(input2[i]);
+        Console.WriteLine();
+    }
+
+    public static void Two()
+    {
+        Console.WriteLine("Enter sentence(e.g. C# is not C++, and PHP is not Delphi!): ");
+        string sentence = Console.ReadLine();
+        string separators = ".,:;=()&[]\"'\\/!? ";
+        string[] parts = new string[sentence.Length];
+        int p = 0; //The index of parts[].
+        for (int i = 0; i < sentence.Length;)
+        {
+            //Check sentence[i] in separators or not
+            if (separators.Contains(sentence[i].ToString()))
+            {
+                parts[p++] = sentence[i++].ToString();
+            } else
+            {
+                //j:starting position of the current word 
+                int j = i;
+                //Find the end of a complete word
+                while (i < sentence.Length && !separators.Contains(sentence[i].ToString()))
+                {
+                    i++;
+                }
+
+                parts[p++] = sentence.Substring(j, i - j);
+            }
+        }
+
+        string[] words = new string[p];
+        int w = 0; //The index of words[].
+        for (int i = 0; i < p; i++)
+            if (!separators.Contains(parts[i]))
+            {
+                words[w++] = parts[i];
+            }
+
+        for (int i = 0, r = w - 1; i < p; i++)
+            if (!separators.Contains(parts[i]))
+            {
+                parts[i] = words[r--];
+            }
+
+        Console.WriteLine("Output:");
+        for (int i = 0; i < p; i++)
+        {
+            Console.Write(parts[i]);
+        }
+    }
+
+    public static void Three()
+    {
+        Console.WriteLine("Enter sentence(e.g. Hi,exe? ABBA! Hog fully a string: ExE. Bob): ");
+        string input = Console.ReadLine();
+
+        char[] separators = { ' ', '.', ',', ':', ';', '!', '?', '(', ')', '[', ']', '"', '\'', '\\', '/' };
+        string[] words = input.Split(separators, StringSplitOptions.RemoveEmptyEntries);
+
+        string[] palindromes = new string[words.Length];
+        int palCount = 0; //number of palindromes stored 
+
+        for (int i = 0; i < words.Length; i++)
+        {
+            string w = words[i]; //currently word
+            bool isPal = true; //is palindromes
+            //double indexes compare from beginning & end to middle
+            for (int j = 0; j < w.Length / 2; j++)
+            {
+                if (w[j] != w[w.Length - 1 - j]) //j: index of left-right symmetric position of palindrome
+                {
+                    isPal = false;
+                    break;
+                }
+            }
+
+            if (!isPal) continue;
+            int k = 0; //k: check all palindromes array
+            for (; k < palCount; k++)
+            {
+                if (w == palindromes[k]) //check word in palindromes
+                {
+                    break;
+                }
+            }
+
+            if (k == palCount) //word not in palindromes -> palindromes[new]
+            {
+                palindromes[palCount] = w;
+                palCount++;
+            }
+        }
+
+        Array.Sort(palindromes, 0, palCount, StringComparer.OrdinalIgnoreCase);
+        Console.WriteLine("Output: ");
+        for (int i = 0; i < palCount; i++)
+        {
+            if (i > 0) Console.Write(", ");
+            Console.Write(palindromes[i]);
+        }
+    }
+
+    public static void Four()
+    {
+        Console.WriteLine("Enter URL(www.apple.com): ");
+        string url = Console.ReadLine();
+        string protocol = "", server = "", resource = "";
+
+        int protocolLocation = url.IndexOf("://"); //location of first (://) 
+        if (protocolLocation != -1)
+        {
+            protocol = url.Substring(0, protocolLocation);
+            url = url.Substring(protocolLocation + 3);
+        }
+
+        int resourceLocation = url.IndexOf('/'); //location of first (/) 
+        if (resourceLocation != -1)
+        {
+            server = url.Substring(0, resourceLocation);
+            resource = url.Substring(resourceLocation + 1);
+        } else
+        {
+            server = url;
+        }
+
+        Console.WriteLine($"[protocol] = {protocol}");
+        Console.WriteLine($"[server] = {server}");
+        Console.WriteLine($"[resource] = {resource}");
+    }
+}
