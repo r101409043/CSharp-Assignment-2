@@ -20,7 +20,7 @@ public static class PracticeArrays
     public static void Two()
     {
         bool toDo = true;
-        List<string> items = new List<string> { };
+        List<string> items = new List<string>();
         while (toDo)
         {
             Console.WriteLine("Enter command (E to Exit and Show List, + item, - item, or -- to clear)):");
@@ -45,7 +45,7 @@ public static class PracticeArrays
                 Console.WriteLine("Invalid command");
                 continue;
             }
-
+            toDo = false;
             Console.WriteLine(input);
         }
     }
